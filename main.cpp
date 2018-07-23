@@ -1,12 +1,14 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Logic/Balls.h"
 
 int main() {
     std::ios::sync_with_stdio(false);
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(600, 400), "Pong NG+");
+    sf::Clock clock;
+
+    Balls menuBall(M_PI / 4, sf::CircleShape(5.f), 0, 0);
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -15,8 +17,12 @@ int main() {
                 window.close();
         }
 
+        sf::Time elapsed = clock.restart();
+
+        menuBall.moveBall();
+
         window.clear();
-        window.draw(shape);
+        window.draw(menuBall.getShape());
         window.display();
     }
 

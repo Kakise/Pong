@@ -4,6 +4,8 @@
 
 #include "Balls.h"
 
+sf::Clock cl;
+
 bool Balls::isEnemy() const {
     return enemy;
 }
@@ -28,14 +30,32 @@ float Balls::getBonusValue() const {
     return bonusValue;
 }
 
-int Balls::getGuide() const {
+Balls::Balls(double guide, const sf::CircleShape &shape, int x, int y) : guide(guide), shape(shape) {
+    getShape().setPosition(x, y);
+    getShape().setFillColor(sf::Color::White);
+}
+
+sf::CircleShape &Balls::getShape() {
+    return shape;
+}
+
+void Balls::moveBall() {
+    sf::Time elapsed = cl.restart();
+
+    // Tbh, it's simple trig
+    Balls::shape.setPosition(Balls::shape.getPosition() +
+                             sf::Vector2f((float) cos(Balls::guide), (float) sin(Balls::guide)) * Balls::speed *
+                             elapsed.asSeconds());
+}
+
+void Balls::setSpeed(float ns) {
+    Balls::speed = ns;
+}
+
+double Balls::getGuide() const {
     return guide;
 }
 
-void Balls::setGuide(double guide) {
-    Balls::guide = guide;
-}
-
-int Balls::getDirx() const {
-    return dirx;
+void Balls::setGuide(double ng) {
+    Balls::guide = ng;
 }

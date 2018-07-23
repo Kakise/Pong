@@ -6,6 +6,7 @@
 #define PONG_BALLS_H
 
 #include <cmath>
+#include <SFML/Graphics.hpp>
 
 #define _USE_MATH_DEFINES
 
@@ -20,30 +21,29 @@ private:
     float bonusValue;
 
     double guide = M_PI;
+    float speed = 400;
 
-    int dirx;
+    sf::CircleShape shape;
 
 public:
     bool isBonus() const;
-
     int getDmg() const;
-
     void setDmg(int dmg);
-
     bool isEnemy() const;
-
     int getBonusType() const;
-
     float getBonusValue() const;
 
-    int getGuide() const;
+    sf::CircleShape &getShape();
 
-    int x, y;
+    Balls(double guide, const sf::CircleShape &shape, int x, int y);
 
-    void setGuide(double guide);
+    void moveBall();
 
-    int getDirx() const;
+    void setSpeed(float ns);
 
+    double getGuide() const;
+
+    void setGuide(double ng);
 };
 
 
