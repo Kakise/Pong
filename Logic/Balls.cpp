@@ -67,6 +67,9 @@ void Balls::onCollision(int side) {
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0.0, 20 / 360 * 2 * M_PI);
 
+    // In each case except the default one, I make a translation in the opposite direction of the collision.
+    // It avoids the ball getting stuck outside the window for whatever reason.
+    // Without these translation, bugs can happen and sometimes, the ball gets stuck outside the window.
     switch (side) {
         case 0:
             Balls::setGuide(2 * M_PI - (Balls::getGuide() + dist(rd)));
