@@ -9,12 +9,18 @@ int main() {
     // Music
     sf::Music menuMusic;
     if (!menuMusic.openFromFile("Assets/menu.ogg"))
-        std::cerr << "Error opening music file" << std::endl;
+        std::cerr << "Error opening 'menu.ogg' music" << std::endl;
     menuMusic.play();
     menuMusic.setLoop(true);
 
+    // Images and textures
+    sf::Texture menuTexture;
+    if (!menuTexture.loadFromFile("Assets/menu.png", sf::Rect(0, 0, 800, 600)))
+        std::cerr << "Can't load 'menu.png' texture" << std::endl;
+    sf::Sprite menuSpr(menuTexture);
+
     // Window Creation
-    sf::RenderWindow window(sf::VideoMode(800, 600, 16), "Pong NG+", sf::Style::Titlebar + sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 600, 16), "Pong NG+", sf::Style::Titlebar | sf::Style::Close);
     window.setMouseCursorVisible(false);
 
     // Shader
@@ -22,7 +28,7 @@ int main() {
     if (!sf::Shader::isAvailable())
         std::cerr << "Can't use shader" << std::endl;
     if (!shader.loadFromFile("Assets/scanline.frag", sf::Shader::Fragment))
-        std::cerr << "Can't load scanline shader" << std::endl;
+        std::cerr << "Can't load 'scanline.frag' shader" << std::endl;
 
 
     // Ball spawning
@@ -39,20 +45,21 @@ int main() {
         // Move the menuBall
         menuBall.moveBall();
 
-        // Detecting collision with the window. Window size independent.
-        if (menuBall.getShape().getPosition().y < 0)
+        // Detecting collision with the window.
+        if (menuBall.getShape().getPosition().y < 235)
             menuBall.onCollision(2);
-        else if (menuBall.getShape().getPosition().y > window.getSize().y)
+        else if (menuBall.getShape().getPosition().y > 535)
             menuBall.onCollision(0);
-        else if (menuBall.getShape().getPosition().x < 0)
+        else if (menuBall.getShape().getPosition().x < 225)
             menuBall.onCollision(3);
-        else if (menuBall.getShape().getPosition().x > window.getSize().x)
+        else if (menuBall.getShape().getPosition().x > 650)
             menuBall.onCollision(1);
 
         // TODO: Main menu
 
         // Update the window content
         window.clear();
+        window.draw(menuSpr);
         window.draw(menuBall.getShape());
         window.display();
     }
