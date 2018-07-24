@@ -17,6 +17,14 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600, 16), "Pong NG+", sf::Style::Titlebar + sf::Style::Close);
     window.setMouseCursorVisible(false);
 
+    // Shader
+    sf::Shader shader;
+    if (!sf::Shader::isAvailable())
+        std::cerr << "Can't use shader" << std::endl;
+    if (!shader.loadFromFile("Assets/scanline.frag", sf::Shader::Fragment))
+        std::cerr << "Can't load scanline shader" << std::endl;
+
+
     // Ball spawning
     Balls menuBall(M_PI / 5, sf::CircleShape(5.f), window.getSize().x / 2, window.getSize().y / 2);
 
