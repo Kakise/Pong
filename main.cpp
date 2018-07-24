@@ -8,7 +8,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(600, 400), "Pong NG+");
     sf::Clock clock;
 
-    Balls menuBall(M_PI / 4, sf::CircleShape(5.f), 0, 0);
+    Balls menuBall(M_PI / 5, sf::CircleShape(5.f), window.getSize().x / 2, window.getSize().y / 2);
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -20,6 +20,15 @@ int main() {
         sf::Time elapsed = clock.restart();
 
         menuBall.moveBall();
+
+        if (menuBall.getShape().getPosition().y < 0)
+            menuBall.onCollision(2);
+        else if (menuBall.getShape().getPosition().y > window.getSize().y)
+            menuBall.onCollision(0);
+        else if (menuBall.getShape().getPosition().x < 0)
+            menuBall.onCollision(3);
+        else if (menuBall.getShape().getPosition().x > window.getSize().x)
+            menuBall.onCollision(1);
 
         window.clear();
         window.draw(menuBall.getShape());

@@ -23,6 +23,7 @@ private:
     double guide = M_PI;
     float speed = 400;
 
+    sf::Clock cl;
     sf::CircleShape shape;
 
 public:
@@ -39,10 +40,10 @@ public:
 
     void moveBall();
 
+    void onCollision(int side);
+
     void setSpeed(float ns);
-
     double getGuide() const;
-
     void setGuide(double ng);
 };
 
