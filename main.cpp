@@ -5,6 +5,8 @@
 
 int main() {
     std::ios::sync_with_stdio(false);
+    // Useful vars
+    int selector(0);
 
     // Music
     sf::Music menuMusic;
@@ -12,6 +14,22 @@ int main() {
         std::cerr << "Error opening 'menu.ogg' music" << std::endl;
     menuMusic.play();
     menuMusic.setLoop(true);
+
+    // Fonts and text
+    sf::Font pixel;
+    if (!pixel.loadFromFile("Assets/pixel.ttf")) {
+        std::cerr << "Error opening 'pixel.ttf' font" << std::endl;
+        return EXIT_FAILURE;
+    }
+    sf::Text title("Pong NG+", pixel, 24);
+    title.setPosition(375, 250);
+    sf::Text start("Start", pixel, 20);
+    start.setPosition(400, 400);
+    start.setFillColor(sf::Color::Red);
+    sf::Text options("Options", pixel, 20);
+    options.setPosition(388, 435);
+    sf::Text exit("Exit", pixel, 20);
+    exit.setPosition(409, 470);
 
     // Images and textures
     sf::Texture menuTexture;
@@ -30,14 +48,58 @@ int main() {
     if (!shader.loadFromFile("Assets/scanline.frag", sf::Shader::Fragment))
         std::cerr << "Can't load 'scanline.frag' shader" << std::endl;
 
-
     // Ball spawning
     Balls menuBall(M_PI / 5, sf::CircleShape(5.f), window.getSize().x / 2, window.getSize().y / 2);
 
     while (window.isOpen()) {
-        // Ensure the window will shutdown
+
+        // Catch the events
         sf::Event event{};
         while (window.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Up)
+                        selector = (selector - 1) % 3;
+                    if (event.key.code == sf::Keyboard::Down)
+                        selector = (selector + 1) % 3;
+                    switch (selector) {
+                        case 0:
+                            start.setFillColor(sf::Color::Red);
+                            options.setFillColor(sf::Color::White);
+                            exit.setFillColor(sf::Color::White);
+                            break;
+                        case 1:
+                            start.setFillColor(sf::Color::White);
+                            options.setFillColor(sf::Color::Red);
+                            exit.setFillColor(sf::Color::White);
+                            break;
+                        case 2:
+                            start.setFillColor(sf::Color::White);
+                            options.setFillColor(sf::Color::White);
+                            exit.setFillColor(sf::Color::Red);
+                            break;
+                        default:
+                            break;
+                    }
+                    if (event.key.code == sf::Keyboard::Return)
+                        switch (selector) {
+                            case 0:
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                window.close();
+                                break;
+                            default:
+                                break;
+                        }
+                    break;
+                default:
+                    break;
+            }
             if (event.type == sf::Event::Closed)
                 window.close();
         }
@@ -55,12 +117,14 @@ int main() {
         else if (menuBall.getShape().getPosition().x > 650)
             menuBall.onCollision(1);
 
-        // TODO: Main menu
-
         // Update the window content
         window.clear();
         window.draw(menuSpr);
         window.draw(menuBall.getShape());
+        window.draw(title);
+        window.draw(start);
+        window.draw(options);
+        window.draw(exit);
         window.display();
     }
 

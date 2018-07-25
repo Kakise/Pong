@@ -16,13 +16,11 @@ private:
 protected:
     float m_speed;
 
-    void move(float relative_up, float relative_right);
-
 public:
     void onCollision(Balls ball, int side);
 
+    void move(float relative_up);
     int getLives() const;
-
     void setLives(int lives);
 
 };
