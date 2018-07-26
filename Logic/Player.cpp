@@ -7,6 +7,9 @@
 
 void Player::move(float relative_up) {
 
+    sf::Clock cl;
+    Player::playerSpr.setPosition(
+            Player::playerSpr.getPosition() + sf::Vector2f(0.f, relative_up * m_speed * cl.restart().asSeconds()));
 }
 
 /// This functions has to be called when the player collides with another object (ie a ball). It handles bonuses, bouncing of a ball, etc...
@@ -42,4 +45,25 @@ int Player::getLives() const {
 
 void Player::setLives(int lives) {
     Player::lives = lives;
+}
+
+Player::Player(int lives, float m_speed, sf::Vector2f position) : lives(lives), m_speed(m_speed) {
+    if (!Player::tex.loadFromFile("Assets/paddle.png")) {
+        std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
+    }
+    Player::playerSpr = sf::Sprite(tex);
+    Player::playerSpr.setPosition(position);
+}
+
+Player::Player(int lives, float m_speed, float x, float y) : lives(lives), m_speed(m_speed) {
+    if (!Player::tex.loadFromFile("Assets/paddle.png")) {
+        std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
+    }
+    Player::playerSpr = sf::Sprite(tex);
+    Player::playerSpr.setPosition(x, y);
+
+}
+
+sf::Sprite Player::getSprite() const {
+    return Player::playerSpr;
 }

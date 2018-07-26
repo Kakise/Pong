@@ -7,11 +7,13 @@
 
 
 #include "Balls.h"
-#include <random>
+#include <SFML/Graphics.hpp>
 
 class Player {
 private:
     int lives;
+    sf::Texture tex;
+    sf::Sprite playerSpr;
 
 protected:
     float m_speed;
@@ -19,9 +21,15 @@ protected:
 public:
     void onCollision(Balls ball, int side);
 
+    Player(int lives, float m_speed, sf::Vector2f position);
+
+    Player(int lives, float m_speed, float x, float y);
+
     void move(float relative_up);
     int getLives() const;
     void setLives(int lives);
+
+    sf::Sprite getSprite() const;
 
 };
 

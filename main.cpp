@@ -19,7 +19,7 @@ int main() {
     sf::Font pixel;
     if (!pixel.loadFromFile("Assets/pixel.ttf")) {
         std::cerr << "Error opening 'pixel.ttf' font" << std::endl;
-        return EXIT_FAILURE;
+        return EXIT_FAILURE; // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
     sf::Text title("Pong NG+", pixel, 24);
     title.setPosition(375, 250);
@@ -87,8 +87,10 @@ int main() {
                     if (event.key.code == sf::Keyboard::Return)
                         switch (selector) {
                             case 0:
+                                DifficultySelection(&window, menuBall);
                                 break;
                             case 1:
+                                window.clear();
                                 break;
                             case 2:
                                 window.close();
@@ -100,8 +102,6 @@ int main() {
                 default:
                     break;
             }
-            if (event.type == sf::Event::Closed)
-                window.close();
         }
 
         // Move the menuBall
