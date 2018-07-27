@@ -99,7 +99,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
                 walls.push_back(vector<int>{pos_x, pos_y, height, width});
     }
 
-    cout << author << speed;
+    cout << "Level author: " << author << endl;
 
     loading.setString("Loading... (7/17)");
     window->clear();
