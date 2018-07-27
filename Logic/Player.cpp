@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 //
 // Created by kakise on 7/19/18.
 //
@@ -6,16 +10,14 @@
 #include "Player.h"
 
 void Player::move(float relative_up) {
-
-    sf::Clock cl;
-    Player::playerSpr.setPosition(
-            Player::playerSpr.getPosition() + sf::Vector2f(0.f, relative_up * m_speed * cl.restart().asSeconds()));
+    float deltaTime = Player::clock.restart().asSeconds();
+    Player::playerSpr.move(0, -relative_up * m_speed * deltaTime);
 }
 
 /// This functions has to be called when the player collides with another object (ie a ball). It handles bonuses, bouncing of a ball, etc...
 /// \param ball The ball that collided with the player.
 /// \param side The side of the ball that collided (0 = up, 1 = right, 2 = bottom, 3 = left).
-void Player::onCollision(Balls ball, int side) {
+void Player::onCollision(Balls &ball, int side) {
 
     // Here I check the nature of the ball and determine what to do.
     if (ball.isEnemy()) {
@@ -47,7 +49,10 @@ void Player::setLives(int lives) {
     Player::lives = lives;
 }
 
-Player::Player(int lives, float m_speed, sf::Vector2f position) : lives(lives), m_speed(m_speed) {
+Player::Player(int lives, float m_speed, sf::Sprite playerSpr, sf::Vector2f position) : lives(lives), m_speed(m_speed),
+                                                                                        playerSpr(
+                                                                                                std::move(playerSpr)) {
+    sf::Clock clock;
     if (!Player::tex.loadFromFile("Assets/paddle.png")) {
         std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
     }
@@ -55,7 +60,9 @@ Player::Player(int lives, float m_speed, sf::Vector2f position) : lives(lives), 
     Player::playerSpr.setPosition(position);
 }
 
-Player::Player(int lives, float m_speed, float x, float y) : lives(lives), m_speed(m_speed) {
+Player::Player(int lives, float m_speed, sf::Sprite playerSpr, float x, float y) : lives(lives), m_speed(m_speed),
+                                                                                   playerSpr(std::move(playerSpr)) {
+    sf::Clock clock;
     if (!Player::tex.loadFromFile("Assets/paddle.png")) {
         std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
     }

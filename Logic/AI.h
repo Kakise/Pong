@@ -15,6 +15,10 @@ private:
 public:
     void diffUpdate();
 
+    void update(Balls &ball);
+
+    AI(int lives, float m_speed, const sf::Sprite &spr, float x, float y, int m_difficulty);
+
 };
 
 

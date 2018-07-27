@@ -24,6 +24,8 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     ///////////////////////////////////////////
 
     bool started(false);
+    sf::Clock clock;
+    sf::Time elapsed(clock.restart());
 
     // Load text and fonts
     sf::Font pixel;
@@ -124,14 +126,17 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     window->display();
 
     // Balls
-    Balls ball(M_PI, sf::CircleShape(5.f), window->getSize().x / 2, window->getSize().y / 2);
+    Balls ball(M_PI, sf::CircleShape(6.5f), window->getSize().x / 2, window->getSize().y / 2);
     ball.setSpeed(0);
     loading.setString("Loading... (16/17)");
     window->clear();
     window->draw(loading);
     window->display();
 
-    // Player
+    // Player & AI
+    Player player1(lives, 400, player, 0, (window->getSize().y - player.getLocalBounds().height) / 2);
+    AI player2(lives, 400, player, window->getSize().x - player.getLocalBounds().width,
+               (window->getSize().y - player.getLocalBounds().height) / 2, 50 * difficulty);
     loading.setString("Loading... (17/17)");
     window->clear();
     window->draw(loading);
@@ -139,7 +144,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
 
     // Level loop
     while (window->isOpen()) {
-
+        int direction(0);
         // Event catcher
         sf::Event event{};
         while (window->pollEvent(event)) {
@@ -158,7 +163,14 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
             }
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && player1.getSprite().getPosition().y > 0)
+            direction = 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
+            player1.getSprite().getPosition().y < (window->getSize().y - player1.getSprite().getLocalBounds().height))
+            direction = -1;
+
         ball.moveBall();
+        player1.move(direction);
 
         // Detecting collision with the window.
         if (ball.getShape().getPosition().y < 0)
@@ -166,8 +178,19 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
         else if (ball.getShape().getPosition().y > window->getSize().y)
             ball.onCollision(0);
 
+        // Detecting collision with the player and the AI
+        if (player1.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds()))
+            player1.onCollision(ball, 3);
+        if (player2.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds()))
+            player2.onCollision(ball, 1);
+
+        player2.update(ball);
+        // Detecting collision with the outer world
+
         window->clear();
         window->draw(terrain);
+        window->draw(player1.getSprite());
+        window->draw(player2.getSprite());
         window->draw(ball.getShape());
         window->display();
     }

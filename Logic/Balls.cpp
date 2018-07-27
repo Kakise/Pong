@@ -65,7 +65,7 @@ void Balls::setGuide(double ng) {
 void Balls::onCollision(int side) {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(0.0, 20 / 360 * 2 * M_PI);
+    std::uniform_real_distribution<double> dist(0.0, M_PI / 8);
 
     // In each case except the default one, I make a translation in the opposite direction of the collision.
     // It avoids the ball getting stuck outside the window for whatever reason.

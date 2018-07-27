@@ -40,7 +40,9 @@ int main() {
     sf::Sprite menuSpr(menuTexture);
 
     // Window Creation
-    sf::RenderWindow window(sf::VideoMode(800, 600, 16), "Pong NG+", sf::Style::Titlebar | sf::Style::Close);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 16;
+    sf::RenderWindow window(sf::VideoMode(800, 600, 16), "Pong NG+", sf::Style::Titlebar | sf::Style::Close, settings);
     window.setMouseCursorVisible(false);
 
     // Shader
