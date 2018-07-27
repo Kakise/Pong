@@ -24,26 +24,29 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     ///////////////////////////////////////////
 
     // 0 -> options. 1 -> bonus. 2+ -> walls
-    vector<vector<string>> levelOptions;
-    ifstream file(fileName.c_str());
+    vector<vector<int>> walls;
+    fstream file(fileName.c_str());
+
+    string author;
+    int lives, speed, aispeed, bonus, interval;
+
+    file >> author;
+    file >> lives;
+    file >> speed;
+    file >> aispeed;
+    file >> bonus;
+    file >> interval;
 
     string line;
     while (getline(file, line)) {
-        levelOptions.push_back(split(line, ';'));
+        stringstream tmp(line);
+        int pos_x, pos_y, height, width;
+        tmp >> pos_x;
+        tmp >> pos_y;
+        tmp >> height;
+        tmp >> width,
+                walls.push_back(vector<int>{pos_x, pos_y, height, width});
     }
 
-    int speed, lives;
-    stringstream customDiff(levelOptions[0][3]);
-    difficulty = 50 * difficulty;
-    customDiff >> difficulty;
 
-    stringstream clives(levelOptions[0][1]);
-    clives >> lives;
-
-    stringstream cspeed(levelOptions[0][2]);
-    cspeed >> speed;
-
-    while (lives) {
-
-    }
 }
