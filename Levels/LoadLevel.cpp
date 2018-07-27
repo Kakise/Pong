@@ -24,8 +24,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     ///////////////////////////////////////////
 
     bool started(false);
-    sf::Clock clock;
-    sf::Time elapsed(clock.restart());
+    int scoreCounter(0);
 
     // Load text and fonts
     sf::Font pixel;
@@ -33,7 +32,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
         cerr << "Error opening 'pixel.ttf' font" << endl;
         exit(EXIT_FAILURE); // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
-    sf::Text loading("Loading... (0/17)", pixel, 24);
+    sf::Text loading("Loading... (0/17)", pixel, 24), score("Score: 0", pixel, 20), livestxt("Lives: 3", pixel, 20);
     loading.setPosition(sf::Vector2f(window->getSize().x / 2.f, window->getSize().y / 2.f));
     loading.setOrigin(loading.getLocalBounds().width / 2, loading.getLocalBounds().height / 2);
     window->clear();
@@ -42,7 +41,12 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
 
     // Loading level
     vector<vector<int>> walls;
-    ifstream file(fileName.c_str());
+    ifstream file;
+    file.open(fileName.c_str());
+    if (!file) {
+        cerr << "Unable to load level" << endl;
+        exit(1);   // call system to stop
+    }
 
     string author;
     int lives, speed, aispeed, bonus, interval;
@@ -95,6 +99,8 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
                 walls.push_back(vector<int>{pos_x, pos_y, height, width});
     }
 
+    cout << author << speed;
+
     loading.setString("Loading... (7/17)");
     window->clear();
     window->draw(loading);
@@ -126,7 +132,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     window->display();
 
     // Balls
-    Balls ball(M_PI, sf::CircleShape(6.5f), window->getSize().x / 2, window->getSize().y / 2);
+    Balls ball(M_PI, sf::CircleShape(6.5f), window->getSize().x / 2 - 6, window->getSize().y / 2);
     ball.setSpeed(0);
     loading.setString("Loading... (16/17)");
     window->clear();
@@ -134,8 +140,8 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     window->display();
 
     // Player & AI
-    Player player1(lives, 400, player, 0, (window->getSize().y - player.getLocalBounds().height) / 2);
-    AI player2(lives, 400, player, window->getSize().x - player.getLocalBounds().width,
+    Player player1(lives, speed, player, 0, (window->getSize().y - player.getLocalBounds().height) / 2);
+    AI player2(lives, aispeed + difficulty * 50, player, window->getSize().x - player.getLocalBounds().width / 2,
                (window->getSize().y - player.getLocalBounds().height) / 2, 50 * difficulty);
     loading.setString("Loading... (17/17)");
     window->clear();
@@ -143,7 +149,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     window->display();
 
     // Level loop
-    while (window->isOpen()) {
+    while (lives) {
         int direction(0);
         // Event catcher
         sf::Event event{};
@@ -179,19 +185,48 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
             ball.onCollision(0);
 
         // Detecting collision with the player and the AI
-        if (player1.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds()))
+        if (player1.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds())) {
+            bump.play();
             player1.onCollision(ball, 3);
-        if (player2.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds()))
+        }
+        if (player2.getSprite().getGlobalBounds().intersects(ball.getShape().getGlobalBounds())) {
             player2.onCollision(ball, 1);
+            bump.play();
+        }
 
         player2.update(ball);
-        // Detecting collision with the outer world
+
+        // Detecting collision with the V O I D
+        if (ball.getShape().getPosition().x < 0) {
+            started = false;
+            ball.getShape().setPosition(window->getSize().x / 2.f - 6, window->getSize().y / 2.f);
+            lives -= 1;
+            death.play();
+            ball.setSpeed(0);
+        } else if (ball.getShape().getPosition().x > window->getSize().x) {
+            scoreCounter += 15 + 5 * difficulty;
+            started = false;
+            ball.getShape().setPosition(window->getSize().x / 2.f - 6, window->getSize().y / 2.f);
+            death.play();
+            ball.setSpeed(0);
+        }
+
+        // Updating GUI
+        score.setString("Score: " + to_string(scoreCounter));
+        score.setOrigin(score.getLocalBounds().width / 2, score.getLocalBounds().height / 2);
+        score.setPosition(window->getSize().x / 2.f, window->getSize().y - 10);
+
+        livestxt.setString("Lives: " + to_string(lives));
+        livestxt.setOrigin(livestxt.getLocalBounds().width / 2, livestxt.getLocalBounds().height / 2);
+        livestxt.setPosition(window->getSize().x / 2.f, 10);
 
         window->clear();
         window->draw(terrain);
         window->draw(player1.getSprite());
         window->draw(player2.getSprite());
         window->draw(ball.getShape());
+        window->draw(score);
+        window->draw(livestxt);
         window->display();
     }
 }
