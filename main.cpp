@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Logic/Balls.h"
+#include "Levels/DifficultySelection.h"
+#include "Levels/LoadLevel.h"
 
 int main() {
     std::ios::sync_with_stdio(false);
