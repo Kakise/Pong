@@ -23,6 +23,8 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
     ///       pos_x pox_y height width      ///
     ///////////////////////////////////////////
 
+    bool started(false);
+
     // Load text and fonts
     sf::Font pixel;
     if (!pixel.loadFromFile("Assets/pixel.ttf")) {
@@ -30,7 +32,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
         exit(EXIT_FAILURE); // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
     sf::Text loading("Loading... (0/17)", pixel, 24);
-    loading.setPosition(sf::Vector2f(window->getSize().x / 2, window->getSize().y / 2));
+    loading.setPosition(sf::Vector2f(window->getSize().x / 2.f, window->getSize().y / 2.f));
     loading.setOrigin(loading.getLocalBounds().width / 2, loading.getLocalBounds().height / 2);
     window->clear();
     window->draw(loading);
@@ -123,7 +125,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
 
     // Balls
     Balls ball(M_PI, sf::CircleShape(5.f), window->getSize().x / 2, window->getSize().y / 2);
-    ball.setSpeed(ball.getSpeed() + 50 * difficulty);
+    ball.setSpeed(0);
     loading.setString("Loading... (16/17)");
     window->clear();
     window->draw(loading);
@@ -144,6 +146,12 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
             switch (event.type) {
                 case sf::Event::Closed:
                     window->close();
+                    break;
+                case sf::Event::KeyPressed:
+                    if (!started) {
+                        started = true;
+                        ball.setSpeed(400 + 50 * difficulty);
+                    }
                     break;
                 default:
                     break;
