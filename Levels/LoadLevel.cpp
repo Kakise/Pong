@@ -8,7 +8,7 @@ using namespace std;
 
 /// This is used to fully loaded a level.
 /// \param fileName Path of the level to load.
-void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
+void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, int difficulty) {
 
     ///////////////////////////////////////////
     ///         STRUCTURE OF A LEVEL        ///
@@ -25,6 +25,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, int difficulty) {
 
     bool started(false);
     int scoreCounter(0);
+    menuMusic->stop();
 
     // Load text and fonts
     sf::Font pixel;

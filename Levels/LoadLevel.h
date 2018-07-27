@@ -16,6 +16,6 @@
 #include "../Logic/AI.h"
 #include "../Logic/Balls.h"
 
-void LoadLevel(std::string fileName, sf::RenderWindow *window, int difficulty);
+void LoadLevel(std::string fileName, sf::RenderWindow *window, sf::Music *menuMusic, int difficulty);
 
 #endif //PONG_LOADLEVEL_H

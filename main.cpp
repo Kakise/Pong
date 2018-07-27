@@ -91,7 +91,8 @@ int main() {
                     if (event.key.code == sf::Keyboard::Return)
                         switch (selector) {
                             case 0:
-                                LoadLevel("Assets/Levels/LEVEL_1", &window, DifficultySelection(&window, menuBall));
+                                LoadLevel("Assets/Levels/LEVEL_1", &window, &menuMusic,
+                                          DifficultySelection(&window, menuBall));
                                 break;
                             case 1:
                                 window.clear();

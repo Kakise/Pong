@@ -28,9 +28,11 @@ AI::AI(int lives, float m_speed, const sf::Sprite &spr, float x, float y, int m_
 
 void AI::update(Balls &ball) {
     if (ball.getShape().getPosition().x > 400) {
-        if (ball.getShape().getPosition().y > playerSpr.getPosition().y)
+        if (ball.getShape().getPosition().y > playerSpr.getPosition().y &&
+            playerSpr.getPosition().y < 600 - playerSpr.getOrigin().y)
             move(-1);
-        if (ball.getShape().getPosition().y < playerSpr.getPosition().y)
+        if (ball.getShape().getPosition().y < playerSpr.getPosition().y &&
+            playerSpr.getPosition().y > playerSpr.getOrigin().y)
             move(1);
     } else {
         move(0);
