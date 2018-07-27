@@ -3,7 +3,7 @@ project(Pong)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Pong main.cpp Logic/AI.cpp Logic/AI.h Logic/Player.cpp Logic/Player.h Logic/Balls.cpp Logic/Balls.h Levels/DifficultySelection.cpp Levels/DifficultySelection.h)
+add_executable(Pong main.cpp Logic/AI.cpp Logic/AI.h Logic/Player.cpp Logic/Player.h Logic/Balls.cpp Logic/Balls.h Levels/DifficultySelection.cpp Levels/DifficultySelection.h Levels/LoadLevel.cpp Levels/LoadLevel.h)
 
 file(COPY Assets DESTINATION ${CMAKE_BINARY_DIR})
 
