@@ -43,6 +43,8 @@ public:
     void onCollision(int side);
 
     void setSpeed(float ns);
+
+    float getSpeed() const;
     double getGuide() const;
     void setGuide(double ng);
 };

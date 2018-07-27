@@ -94,3 +94,7 @@ void Balls::onCollision(int side) {
     }
 
 }
+
+float Balls::getSpeed() const {
+    return Balls::speed;
+}
