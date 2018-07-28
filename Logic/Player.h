@@ -12,10 +12,10 @@
 class Player {
 protected:
     int lives;
+    float m_speed;
     sf::Texture tex;
     sf::Sprite playerSpr;
     sf::Clock clock;
-    float m_speed;
 
 public:
     void onCollision(Balls &ball, int side);

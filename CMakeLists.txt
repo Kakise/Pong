@@ -22,3 +22,5 @@ if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(Pong ${SFML_LIBRARIES})
 endif ()
+
+target_link_libraries(Pong stdc++fs)

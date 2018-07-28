@@ -5,10 +5,10 @@ Pong NG+ is a simple pong game made using SFML.
  * Difficulty selection
  * AI
  * Custom level making via txt files
+ * Level selection
  
 ## TODO
  * Wall spawning and collision
- * Level selection
  * Options
  * Save file
 

@@ -158,7 +158,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, 
             switch (event.type) {
                 case sf::Event::Closed:
                     window->close();
-                    break;
+                    exit(EXIT_SUCCESS);
                 case sf::Event::KeyPressed:
                     if (!started) {
                         started = true;

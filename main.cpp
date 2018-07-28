@@ -9,6 +9,7 @@ int main() {
     std::ios::sync_with_stdio(false);
     // Useful vars
     int selector(0);
+    std::string level;
 
     // Music
     sf::Music menuMusic;
@@ -91,8 +92,8 @@ int main() {
                     if (event.key.code == sf::Keyboard::Return)
                         switch (selector) {
                             case 0:
-                                LoadLevel("Assets/Levels/LEVEL_1", &window, &menuMusic,
-                                          DifficultySelection(&window, menuBall));
+                                LoadLevel(level, &window, &menuMusic,
+                                          DifficultySelection(&window, menuBall, level));
                                 break;
                             case 1:
                                 window.clear();

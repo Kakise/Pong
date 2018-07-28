@@ -7,8 +7,29 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <filesystem>
+#include <vector>
+#include <string>
 #include "../Logic/Balls.h"
 
-int DifficultySelection(sf::RenderWindow *window, Balls menuBall);
+template<class T>
+std::vector<T> split(T &string, char &c) {
+    std::string buffer;
+    std::vector<T> vector;
+
+    for (auto n:string) {
+        if (n != c) {
+            buffer += n;
+        } else {
+            vector.push_back(buffer);
+            buffer = "";
+        }
+    }
+    vector.push_back(buffer);
+
+    return vector;
+}
+
+int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string &level);
 
 #endif //PONG_DIFFICULTYSELECTION_H
