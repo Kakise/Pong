@@ -53,7 +53,7 @@ Player::Player(int lives, float m_speed, sf::Sprite playerSpr, sf::Vector2f posi
                                                                                         playerSpr(
                                                                                                 std::move(playerSpr)) {
     sf::Clock clock;
-    if (!Player::tex.loadFromFile("Assets/paddle.png")) {
+    if (!Player::tex.loadFromFile(std::string(ASSETS_DIR) + "/paddle.png")) {
         std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
     }
     Player::playerSpr = sf::Sprite(tex);
@@ -63,7 +63,7 @@ Player::Player(int lives, float m_speed, sf::Sprite playerSpr, sf::Vector2f posi
 Player::Player(int lives, float m_speed, sf::Sprite playerSpr, float x, float y) : lives(lives), m_speed(m_speed),
                                                                                    playerSpr(std::move(playerSpr)) {
     sf::Clock clock;
-    if (!Player::tex.loadFromFile("Assets/paddle.png")) {
+    if (!Player::tex.loadFromFile(std::string(ASSETS_DIR) + "/paddle.png")) {
         std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
     }
     Player::playerSpr = sf::Sprite(tex);

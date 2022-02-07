@@ -5,6 +5,11 @@
 #ifndef PONG_AI_H
 #define PONG_AI_H
 
+#ifdef __APPLE__
+#define ASSETS_DIR "../Resources"
+#elif
+#define ASSETS_DIR "Assets"
+#endif
 
 #include "Player.h"
 

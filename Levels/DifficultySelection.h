@@ -5,6 +5,12 @@
 #ifndef PONG_DIFFICULTYSELECTION_H
 #define PONG_DIFFICULTYSELECTION_H
 
+#ifdef __APPLE__
+#define ASSETS_DIR "../Resources"
+#elif
+#define ASSETS_DIR "Assets"
+#endif
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <filesystem>
@@ -30,6 +36,6 @@ std::vector<T> split(T &string, char &c) {
     return vector;
 }
 
-int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string &level);
+int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string *level);
 
 #endif //PONG_DIFFICULTYSELECTION_H

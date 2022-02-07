@@ -5,6 +5,12 @@
 #ifndef PONG_LOADLEVEL_H
 #define PONG_LOADLEVEL_H
 
+#ifdef __APPLE__
+#define ASSETS_DIR "../Resources"
+#elif
+#define ASSETS_DIR "Assets"
+#endif
+
 #include <string>
 #include <vector>
 #include <fstream>

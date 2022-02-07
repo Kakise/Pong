@@ -5,6 +5,11 @@
 #ifndef PONG_PLAYER_H
 #define PONG_PLAYER_H
 
+#ifdef __APPLE__
+#define ASSETS_DIR "../Resources"
+#elif
+#define ASSETS_DIR "Assets"
+#endif
 
 #include "Balls.h"
 #include <SFML/Graphics.hpp>

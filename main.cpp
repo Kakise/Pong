@@ -5,22 +5,29 @@
 #include "Levels/DifficultySelection.h"
 #include "Levels/LoadLevel.h"
 
+#ifdef __APPLE__
+#define ASSETS_DIR "../Resources"
+#elif
+#define ASSETS_DIR "Assets"
+#endif
+
 int main() {
     std::ios::sync_with_stdio(false);
     // Useful vars
     int selector(0);
+    int levelDiff;
     std::string level;
 
     // Music
     sf::Music menuMusic;
-    if (!menuMusic.openFromFile("Assets/menu.ogg"))
+    if (!menuMusic.openFromFile(std::string(ASSETS_DIR) + "/menu.ogg"))
         std::cerr << "Error opening 'menu.ogg' music" << std::endl;
     menuMusic.play();
     menuMusic.setLoop(true);
 
     // Fonts and text
     sf::Font pixel;
-    if (!pixel.loadFromFile("Assets/pixel.ttf")) {
+    if (!pixel.loadFromFile(std::string(ASSETS_DIR) + "/pixel.ttf")) {
         std::cerr << "Error opening 'pixel.ttf' font" << std::endl;
         return EXIT_FAILURE; // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
@@ -36,7 +43,7 @@ int main() {
 
     // Images and textures
     sf::Texture menuTexture;
-    if (!menuTexture.loadFromFile("Assets/menu.png", sf::Rect(0, 0, 800, 600)))
+    if (!menuTexture.loadFromFile(std::string(ASSETS_DIR) + "/menu.png", sf::Rect(0, 0, 800, 600)))
         std::cerr << "Can't load 'menu.png' texture" << std::endl;
     sf::Sprite menuSpr(menuTexture);
 
@@ -50,7 +57,7 @@ int main() {
     sf::Shader shader;
     if (!sf::Shader::isAvailable())
         std::cerr << "Can't use shader" << std::endl;
-    if (!shader.loadFromFile("Assets/scanline.frag", sf::Shader::Fragment))
+    if (!shader.loadFromFile(std::string(ASSETS_DIR) + "/scanline.frag", sf::Shader::Fragment))
         std::cerr << "Can't load 'scanline.frag' shader" << std::endl;
 
     // Ball spawning
@@ -92,8 +99,8 @@ int main() {
                     if (event.key.code == sf::Keyboard::Return)
                         switch (selector) {
                             case 0:
-                                LoadLevel(level, &window, &menuMusic,
-                                          DifficultySelection(&window, menuBall, level));
+                                levelDiff = DifficultySelection(&window, menuBall, &level);
+                                LoadLevel(level, &window, &menuMusic, levelDiff);
                                 break;
                             case 1:
                                 window.clear();

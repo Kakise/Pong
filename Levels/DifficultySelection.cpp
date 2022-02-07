@@ -6,19 +6,19 @@
 
 namespace fs = std::filesystem;
 
-int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string &level) {
+int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string *level) {
     int selector(0);
     int levelSelector(0);
     int selected(0);
     window->clear();
 
     std::vector<std::string> dir;
-    for (auto const p : fs::directory_iterator("Assets/Levels"))
+    for (auto const p : fs::directory_iterator(std::string(ASSETS_DIR) + "/Levels"))
         dir.push_back(p.path());
 
     // Fonts and text
     sf::Font pixel;
-    if (!pixel.loadFromFile("Assets/pixel.ttf")) {
+    if (!pixel.loadFromFile(std::string(ASSETS_DIR) + "/pixel.ttf")) {
         std::cerr << "Error opening 'pixel.ttf' font" << std::endl;
         exit(EXIT_FAILURE); // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
@@ -36,7 +36,7 @@ int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string &l
 
     // Images & Textures
     sf::Texture menuTexture;
-    if (!menuTexture.loadFromFile("Assets/menu.png", sf::Rect(0, 0, 800, 600)))
+    if (!menuTexture.loadFromFile(std::string(ASSETS_DIR) + "/menu.png", sf::Rect(0, 0, 800, 600)))
         std::cerr << "Can't load 'menu.png' texture" << std::endl;
     sf::Sprite menuSpr(menuTexture);
 
@@ -98,9 +98,9 @@ int DifficultySelection(sf::RenderWindow *window, Balls menuBall, std::string &l
             menuBall.onCollision(1);
 
 
-        level = dir[levelSelector];
+        *level = dir[levelSelector];
         char c = '/';
-        levelSelect.setString(split(level, c)[2]);
+        levelSelect.setString(split(*level, c)[2]);
         levelSelect.setOrigin(levelSelect.getLocalBounds().width / 2, levelSelect.getLocalBounds().height / 2);
         levelSelect.setPosition(437.5, 300);
 

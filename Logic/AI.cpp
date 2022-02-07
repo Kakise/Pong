@@ -16,7 +16,7 @@ AI::AI(int lives, float m_speed, const sf::Sprite &spr, float x, float y, int m_
                                                                                               m_difficulty(
                                                                                                       m_difficulty) {
     sf::Clock clock;
-    if (!Player::tex.loadFromFile("Assets/paddle.png")) {
+    if (!Player::tex.loadFromFile(std::string(ASSETS_DIR) + "/paddle.png")) {
         std::cerr << "Can't load 'paddle.png' image, exiting..." << std::endl;
     }
     Player::playerSpr = sf::Sprite(tex);

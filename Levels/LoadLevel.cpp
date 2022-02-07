@@ -29,7 +29,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, 
 
     // Load text and fonts
     sf::Font pixel;
-    if (!pixel.loadFromFile("Assets/pixel.ttf")) {
+    if (!pixel.loadFromFile(std::string(ASSETS_DIR) + "/pixel.ttf")) {
         cerr << "Error opening 'pixel.ttf' font" << endl;
         exit(EXIT_FAILURE); // I can't display text without any font so if it can't be loaded, just let's exit the program.
     }
@@ -43,6 +43,7 @@ void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, 
     // Loading level
     vector<vector<int>> walls;
     ifstream file;
+    std::cout << fileName.c_str();
     file.open(fileName.c_str());
     if (!file) {
         cerr << "Unable to load level" << endl;
@@ -109,9 +110,9 @@ void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, 
 
     // Images and textures
     sf::Texture court, paddle;
-    if (!court.loadFromFile("Assets/court.png"))
+    if (!court.loadFromFile(std::string(ASSETS_DIR) + "/court.png"))
         cerr << "Cannot load 'court.png' texture" << endl;
-    if (!paddle.loadFromFile("Assets/paddle.png"))
+    if (!paddle.loadFromFile(std::string(ASSETS_DIR) + "/paddle.png"))
         cerr << "Cannot load 'paddle.png' texture" << endl;
     sf::Sprite terrain(court), player(paddle);
     terrain.setPosition(0, 0);
@@ -122,9 +123,9 @@ void LoadLevel(string fileName, sf::RenderWindow *window, sf::Music *menuMusic, 
 
     // SFX
     sf::SoundBuffer bfrBump, bfrDeath;
-    if (!bfrBump.loadFromFile("Assets/bump.ogg"))
+    if (!bfrBump.loadFromFile(std::string(ASSETS_DIR) + "/bump.ogg"))
         cerr << "Cannot load 'bump.ogg' sfx" << endl;
-    if (!bfrDeath.loadFromFile("Assets/death.ogg"))
+    if (!bfrDeath.loadFromFile(std::string(ASSETS_DIR) + "/death.ogg"))
         cerr << "Cannot load 'death.ogg' sfx" << endl;
     sf::Sound bump(bfrBump), death(bfrDeath);
     loading.setString("Loading... (15/17)");
